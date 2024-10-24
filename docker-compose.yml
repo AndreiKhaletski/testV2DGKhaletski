@@ -1,0 +1,46 @@
+name: testv2
+services:
+  TestKheltskiV2DigitalChief:
+    build: TestKheltskiV2DigitalChief
+    image: test:1.0.0
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_LOGIN: eldg_app
+      DB_PASSWORD: 855312
+    networks:
+      - testv2-network
+  
+  pg_db:
+    build: postgresql
+    image: postgresql-testv2:1.0.0
+    environment:
+      POSTGRES_USER: test_admin
+      POSTGRES_PASSWORD: 855312
+    networks:
+      - testv2-network
+  
+  pgadmin:
+    build: pgadmin
+    image: pgadmin-test:1.0.0
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@test.com
+      PGADMIN_DEFAULT_PASSWORD: test
+    ports:
+      - "85:80"
+    networks:
+      - testv2-network
+
+  elasticsearch:
+    build: elasticsearch
+    image: elasticsearch-test:1.0.0
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - testv2-network
+
+networks:
+  testv2-network:

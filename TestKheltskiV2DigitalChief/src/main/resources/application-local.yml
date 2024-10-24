@@ -1,0 +1,12 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:15432/dbelastic
+    username: eldg_app
+    password: 855312
+
+logging:
+  level:
+    root: DEBUG

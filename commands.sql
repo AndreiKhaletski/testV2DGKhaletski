@@ -1,0 +1,39 @@
+CREATE ROLE eldg_app WITH
+	LOGIN
+	NOSUPERUSER
+	CREATEDB
+	NOCREATEROLE
+	INHERIT
+	NOREPLICATION
+	NOBYPASSRLS
+	CONNECTION LIMIT -1
+	PASSWORD '855312';
+
+CREATE DATABASE dbelastic
+	WITH
+	OWNER=eldg_app
+	ENCODING='UTF8'
+	CONNECTION LIMIT=-1
+	IS_TEMPLATE=False;
+
+CREATE SCHEMA app AUTHORIZATION "eldg_app";
+
+CREATE TABLE IF NOT EXISTS app.product (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    active BOOLEAN NOT NULL,
+    start_date DATE
+);
+
+CREATE TABLE IF NOT EXISTS app.sky (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    color VARCHAR(50),
+    available BOOLEAN NOT NULL,
+    product_id BIGINT,
+    CONSTRAINT fk_product
+      FOREIGN KEY(product_id)
+      REFERENCES app.product(id)
+);
